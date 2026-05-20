@@ -8,6 +8,14 @@ Passwordless authentication for Laravel via email magic links. No passwords, no 
 
 ## Installation
 
+### Migrating an existing app with an AI agent
+
+If you are replacing an existing Laravel auth flow, use the included [`PROMPT.md`](PROMPT.md) with your AI coding agent. It gives the agent package-specific instructions for installing this package, updating your auth UI, removing old password routes, preserving redirects and middleware, and verifying the magic-link flow.
+
+Copy the contents of [`PROMPT.md`](PROMPT.md) into your AI coding agent.
+
+### Install Package
+
 ```bash
 composer require harrisonclewis/laravel-passwordless
 ```
@@ -27,12 +35,13 @@ php artisan vendor:publish --tag=passwordless-views
 
 ## Usage
 
-**Sending the magic link**
+### Sending authentication link
+
 ```blade
 <form method="POST" action="{{ route('passwordless.store') }}">
     @csrf
     <input type="email" name="email" placeholder="you@example.com" />
-    <button type="submit">Send login link</button>
+    <button type="submit">Login</button>
 </form>
 
 @if (session(config('passwordless.session.sent')))
