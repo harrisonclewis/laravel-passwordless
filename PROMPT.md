@@ -10,7 +10,7 @@ The agent should install the package, wire the app's existing auth UI to it, rem
 
 Replace this Laravel application's password login, registration, and password reset flow with email magic-link authentication using `harrisonclewis/laravel-passwordless`.
 
-Do not build a second passwordless system. Use the package's routes, config, database table, notification, token model, and session flash key.
+Do not build a second passwordless system. Use the package's routes, config, database table, notification, token model, and flash key.
 
 Preserve the existing app's:
 
@@ -78,16 +78,16 @@ The default route prefix is configurable with `passwordless.routes.prefix`.
 After a successful POST, the controller redirects back with this flash key:
 
 ```php
-config('passwordless.session.sent') // default: 'passwordless_sent'
+config('passwordless.flash') // default: 'passwordless'
 ```
 
-Use this exact key to show a confirmation message:
+In Blade or Livewire, use this exact key to show a confirmation message:
 
 ```php
-session(config('passwordless.session.sent'))
+session(config('passwordless.flash'))
 ```
 
-When this flash key is present, hide the login form and show a sent-state message instead. The user should not see the email input and submit button again immediately after a successful request.
+When this flash data is present, hide the login form and show a sent-state message instead. The user should not see the email input and submit button again immediately after a successful request.
 
 Use wording that prompts them to check their email, for example:
 
@@ -130,9 +130,7 @@ return [
     'redirect' => '/dashboard',
     'register' => true,
 
-    'session' => [
-        'sent' => 'passwordless_sent',
-    ],
+    'flash' => 'passwordless',
 
     'auth' => [
         'provider' => null,
@@ -170,7 +168,7 @@ Keep the existing login page route if other parts of the app expect `route('logi
 Use the package route:
 
 ```blade
-@if (session(config('passwordless.session.sent')))
+@if (session(config('passwordless.flash')))
     <p>Check your email for a login link.</p>
 @else
     <form method="POST" action="{{ route('passwordless.store') }}">
@@ -206,13 +204,14 @@ Remove password fields, password validation, `LoginRequest`, and `Auth::attempt(
 - Submit to `route('passwordless.store')` with the existing Inertia form helper, `router.post()`, or Inertia v2 `<Form>`.
 - Send `email` and optional `remember`.
 - Remove password state, password validation display, password reset links, and password submit handlers.
-- Share the package flash key from `HandleInertiaRequests` or equivalent middleware:
+- If the app uses an Inertia version with native flash data, read the package flash from `page.flash.passwordless` on the client, or from the configured flash key if the app changed `passwordless.flash`.
+- If the app uses an older Inertia setup without native flash data, share the package flash key from `HandleInertiaRequests` or equivalent middleware:
 
 ```php
-'passwordlessSent' => session(config('passwordless.session.sent')),
+'passwordless' => fn () => session(config('passwordless.flash')),
 ```
 
-- Display the sent state when `passwordlessSent` is truthy.
+- Display the sent state when the passwordless flash data is truthy.
 - Hide the login form after successful submission and show only the "check your email" message. If the component still has the submitted email in local state, the message may include it.
 - No SPA route is needed for `passwordless.show`; link consumption is server-side.
 
@@ -220,7 +219,7 @@ Remove password fields, password validation, `LoginRequest`, and `Auth::attempt(
 
 Prefer a normal form POST to `route('passwordless.store')` when it fits the component.
 
-If the component must handle submission itself, validate `email` and `remember`, then delegate to the package route/controller behavior rather than recreating token logic. Keep the sent state based on `session(config('passwordless.session.sent'))`, hide the form after success, and show a "check your email" message instead.
+If the component must handle submission itself, validate `email` and `remember`, then delegate to the package route/controller behavior rather than recreating token logic. Keep the sent state based on `session(config('passwordless.flash'))`, hide the form after success, and show a "check your email" message instead.
 
 ### API-only Or Non-Laravel Frontend
 
@@ -295,7 +294,7 @@ Before finishing, run the relevant checks for the app, such as tests, linting, a
 - The login page shows email and optional remember fields only.
 - Submitting the login page sends `POST route('passwordless.store')` with CSRF.
 - Validation errors appear for an invalid email.
-- Successful submission hides the login form and shows the sent-state message from `session(config('passwordless.session.sent'))`.
+- Successful submission hides the login form and shows the sent-state message from `session(config('passwordless.flash'))` or the equivalent Inertia flash data.
 - A magic-link email is sent and contains a usable `passwordless.show` URL.
 - Clicking the link logs the user in and redirects correctly.
 - Reusing the same link returns HTTP 410 or the app's friendly equivalent.

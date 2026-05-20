@@ -20,9 +20,19 @@ class PasswordlessController extends Controller
 
         $sendToken->send($token);
 
-        return redirect()
-            ->back()
-            ->with(config("passwordless.session.sent"), true);
+        $flash = config("passwordless.flash");
+        $data = [
+            "sent" => true,
+            "email" => $token->email,
+        ];
+
+        $request->session()->flash($flash, $data);
+
+        if (class_exists(\Inertia\Inertia::class)) {
+            \Inertia\Inertia::flash($flash, $data);
+        }
+
+        return redirect()->back();
     }
 
     public function show(Token $token, ConsumesToken $consumeToken)

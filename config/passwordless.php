@@ -19,15 +19,13 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Session
+    | Flash
     |--------------------------------------------------------------------------
     |
-    | Session key used to indicate that a magic login link has been sent.
+    | Flash key used to indicate that a magic login link has been sent.
     |
     */
-    "session" => [
-        "sent" => env("PASSWORDLESS_SESSION_SENT", "passwordless_sent"),
-    ],
+    "flash" => env("PASSWORDLESS_FLASH", "passwordless"),
 
     /*
     |--------------------------------------------------------------------------

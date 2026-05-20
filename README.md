@@ -44,10 +44,12 @@ php artisan vendor:publish --tag=passwordless-views
     <button type="submit">Login</button>
 </form>
 
-@if (session(config('passwordless.session.sent')))
+@if (session(config('passwordless.flash')))
     <p>Check your email for a login link.</p>
 @endif
 ```
+
+For Inertia apps, you can use the flash prop `page.flash.passwordless`, or from the configured flash key if you changed `passwordless.flash`.
 
 ### Routes
 
