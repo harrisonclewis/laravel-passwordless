@@ -8,7 +8,7 @@ Passwordless authentication for Laravel via email magic links. No passwords, no 
 
 ## Installation
 
-### Migrating an existing app with an AI agent
+### Migrate an existing app
 
 If you are replacing an existing Laravel auth flow, use the included [`PROMPT.md`](PROMPT.md) with your AI coding agent. It gives the agent package-specific instructions for installing this package, updating your auth UI, removing old password routes, preserving redirects and middleware, and verifying the magic-link flow.
 
