@@ -4,7 +4,7 @@
 
 # Introduction
 
-Passwordless authentication for Laravel via email magic links. No passwords, no hassle. Users enter their email and receive a one-time login link.
+Passwordless authentication for Laravel. No passwords, no hassle. Users enter their email and receive a one-time login link.
 
 ## Installation
 
