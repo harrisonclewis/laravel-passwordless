@@ -47,7 +47,7 @@ class Token extends Model
 
     public function url(): string
     {
-        return route("passwordless.show", $this, false);
+        return route("passwordless.show", $this);
     }
 
     public function expiresInMinutes(): int

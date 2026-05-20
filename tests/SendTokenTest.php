@@ -39,6 +39,7 @@ it('sends the magic login link notification', function () {
             $mailable = $notification->toMail($notifiable);
 
             expect($mailable)->toBeInstanceOf(PasswordlessMailable::class)
+                ->and($mailable->token->url())->toStartWith(config('app.url'))
                 ->and($mailable->token->url())->toContain($token->id);
 
             return true;
