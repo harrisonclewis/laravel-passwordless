@@ -1,0 +1,62 @@
+{
+  "name": "harrisonclewis/laravel-passwordless",
+  "description": "Passwordless authentication for Laravel",
+  "keywords": [
+    "laravel",
+    "authentication",
+    "passwordless",
+    "magic-link",
+    "login"
+  ],
+  "homepage": "https://github.com/harrisonclewis/laravel-passwordless",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Harrison Lewis",
+      "email": "harrison@harlew.com"
+    }
+  ],
+  "require": {
+    "php": "^8.1",
+    "illuminate/contracts": "^10.0|^11.0|^12.0|^13.0",
+    "illuminate/mail": "^10.0|^11.0|^12.0|^13.0",
+    "illuminate/notifications": "^10.0|^11.0|^12.0|^13.0",
+    "illuminate/support": "^10.0|^11.0|^12.0|^13.0"
+  },
+  "require-dev": {
+    "laravel/pint": "^1.14",
+    "orchestra/testbench": "^9.0|^10.0|^11.0",
+    "pestphp/pest": "^3.0",
+    "pestphp/pest-plugin-laravel": "^3.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Harlew\\Passwordless\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "test": "vendor/bin/pest",
+    "test-coverage": "vendor/bin/pest --coverage",
+    "format": "vendor/bin/pint"
+  },
+  "config": {
+    "sort-packages": true,
+    "allow-plugins": {
+      "pestphp/pest-plugin": true
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Harlew\\Passwordless\\PasswordlessServiceProvider"
+      ]
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}
