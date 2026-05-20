@@ -7,7 +7,6 @@ use Harlew\Passwordless\Contracts\CreatesToken;
 use Harlew\Passwordless\Contracts\SendsToken;
 use Harlew\Passwordless\Http\Requests\CreateTokenRequest;
 use Harlew\Passwordless\Models\Token;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
 class PasswordlessController extends Controller
@@ -17,7 +16,7 @@ class PasswordlessController extends Controller
         CreatesToken $createToken,
         SendsToken $sendToken,
     ) {
-        $token = $createToken->create($request);
+        $token = $createToken->create($request->validated());
 
         $sendToken->send($token);
 
